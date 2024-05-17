@@ -1,0 +1,21 @@
+body {
+    background: url(weather.jpg);
+    color: whitesmoke;
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+.parent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.weatherinfo {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
