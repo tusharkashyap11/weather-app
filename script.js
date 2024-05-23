@@ -1,35 +1,50 @@
-const city = 'agra';
-const img = document.querySelector('img');
+let toggle = false;
 async function getWeather(location) {
     const response = await fetch('http://api.weatherapi.com/v1/current.json?key=c79d288340ee4cc7a62114856242804&q=' + location, {mode: 'cors'});
     const weatherData = await response.json();
-    console.log(weatherData);
-
     weatherInfo(weatherData);
 }
+const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = document.getElementById('location').value;
+    getWeather(input);
+})
 function weatherInfo(obj) {
-    const div = document.querySelector('.weatherinfo');
-    div.append(createItem("Weather", obj.current.condition.text));
-    div.append(createItem("Temperature", obj.current.temp_c + " °C"));
-    div.append(createItem("Location", obj.location.name + ", " + obj.location.region + ", " + obj.location.country));
-    div.append(createItem("Date & Time", getDateAndTime()));
+    const divToRemove = document.querySelector('.weatherinfo');
+    if (divToRemove) {
+        divToRemove.remove();
+    }   
+    const body = document.querySelector('body');
+    const div = document.createElement('div');
+    const img = document.createElement('img');
+    const button = document.createElement('button');
+    button.innerHTML = "Change Temp";
+    button.addEventListener('click', changeTemp);
+    img.src = obj.current.condition.icon;
+    const p = document.createElement('p');
+    p.className = 'temp';
+    div.append(img)
+    div.append(createItem(obj.current.condition.text));
+    if (toggle) {
+        p.textContent = obj.current.temp_f + " °F";
+        div.append(p);
+    } else {
+        p.textContent = obj.current.temp_c + " °C";
+        div.append(p);
+    }
+    div.append(createItem(obj.location.name + ", " + obj.location.region + ", " + obj.location.country));
+    div.append(createItem(obj.location.localtime));
+    div.append(button);
+    div.className = 'weatherinfo';
+    body.append(div);
+    function changeTemp() {
+        toggle = !toggle;
+        weatherInfo(obj);
+    }
 }
-function getDateAndTime() {
-    const now = new Date();
-    const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-    };
-    const formattedDateTime = now.toLocaleString('en-US', options);
-    return formattedDateTime;
-}
-function createItem(x, y) {
+function createItem(x) {
     const item = document.createElement('p');
-    item.textContent = x + ": " + y;
+    item.textContent = x;
     return item;
 }
-getWeather(city);
