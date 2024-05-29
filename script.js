@@ -1,6 +1,6 @@
 let toggle = false;
 async function getWeather(location) {
-    const response = await fetch('http://api.weatherapi.com/v1/current.json?key=c79d288340ee4cc7a62114856242804&q=' + location, {mode: 'cors'});
+    const response = await fetch('https://api.weatherapi.com/v1/current.json?key=c79d288340ee4cc7a62114856242804&q=' + location, {mode: 'cors'});
     const weatherData = await response.json();
     weatherInfo(weatherData);
 }
